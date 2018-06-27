@@ -15,13 +15,13 @@ var getAllUsers = function(req,res){
       res.json({data : result});
     })
     .catch(function(err){
-      res.status(404).end(err.message);
+      res.status(404).end({success : false , message : err.message});
     });
     })
 
   .catch(function(err){
     //console.log(err);
-    res.status(404).end(err.message);
+    res.status(404).json({success : false , message : err.message});
   });
 };
 
@@ -32,7 +32,20 @@ var getUser = function(req,res){
   })
   .catch(function(err){
     //console.log(err);
-    res.status(404).end(err.message);
+    res.status(404).json({success : false , message : err.message});
+  });
+};
+
+
+
+var createUser = function(req,res){
+
+  userService.createOne(req.body)
+  .then(function(result){
+    res.json({success : "True", Database_Reply : result});
+  })
+  .catch(function(err){
+    res.status(404).json({success : false , message : err.message});
   });
 };
 
@@ -41,6 +54,6 @@ var getUser = function(req,res){
 
 
 
-
+module.exports.createUser = createUser;
 module.exports.getAllUsers = getAllUsers;
 module.exports.getUser = getUser;

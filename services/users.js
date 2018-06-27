@@ -92,5 +92,27 @@ var getOne = function(email){
 
 
 
+var createOne = function(user){
+  return new Promise(function(resolve, reject){
+
+   getOne(user.email)
+   .then(function(user){
+     if(user) reject(new Error("User already in the database"));
+   })
+   .catch(function(err){
+     var query = `INSERT INTO user VALUES('${user.firstname}', '${user.lastname}', '${user.email}')`;
+
+     db.query(query, function(err, result){
+       if (err)reject(err);
+       else {
+         resolve(result);
+       }
+     });
+   })
+  });
+}
+
+
+module.exports.createOne = createOne;
 module.exports.getAll = getAll;
 module.exports.getOne = getOne;

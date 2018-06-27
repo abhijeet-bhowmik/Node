@@ -1,5 +1,6 @@
 const db = require('../connector.js');
 const helper = require('./helperFunctions.js');
+const userService = require('./users.js');
 //const schema = require('./schema.js');
 
 
@@ -39,6 +40,36 @@ var executeQuery = function(attribute, value){
     })
   })
 }
+
+
+
+var createOne = function(data){
+        return new Promise(function(resolve, reject){
+          let user_id = data.user_id;
+          let house_no =data.address.house_no;
+          let locality =data.address.locality;
+          let city = data.address.city;
+          userService.getOne(user_id)
+          .then(function(user){
+            query =`INSERT INTO address VALUES('${house_no}', '${locality}', '${city}', '${user_id}')`;
+            db.query(query, function(err, result){
+            if(err) reject(err);
+            else resolve(result);
+          });
+          })
+          .catch(function(err){
+            reject(err);
+          });
+        });
+        }
+
+
+
+
+
+
+
+module.exports.createOne = createOne;
 module.exports.executeQuery = executeQuery;
 module.exports.getAll = getAll;
 module.exports.getOfUser = getOfUser;

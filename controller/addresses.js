@@ -8,7 +8,7 @@ var getAllAddresses = function(req,res){
     res.json({data : addresses});
   })
   .catch(function(err){
-    res.status(404).end(err.message);
+    res.status(404).json({success : false , message : err.message});
   });
 }
 
@@ -18,7 +18,7 @@ var getOfUser = function(req,res){
     res.json({data : addresses});
   })
   .catch(function(err){
-    res.status(404).end(err.message);
+    res.status(404).json({success : false , message : err.message});
   });
 }
 
@@ -32,12 +32,24 @@ var fulfillQuery = function(req,res){
     res.json(result);
   })
   .catch(function(err){
-    res.status(404).end(err.message);
+    res.status(404).json({success : false , message : err.message});
   });
 }
 
 
+var createAddress =function(req, res){
+service.createOne(req.body)
+.then(function(result){
+  res.json({success : "True", Database_Reply : result});
+})
+.catch(function(err){
+res.status(404).json({success : false , message : err.message});
+});
 
+}
+
+
+module.exports.createAddress = createAddress;
 module.exports.getAllAddresses = getAllAddresses;
 module.exports.getOfUser = getOfUser;
 module.exports.fulfillQuery = fulfillQuery;

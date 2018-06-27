@@ -3,18 +3,20 @@ const router = express.Router();
 const controller = require('../controller/addresses.js');
 const verify = require('../JWT.js');
 //const db = require('../connector.js');
+const validation = require('./validations.js');
 
 
 router.route('/')
-.get(verify.verifyToken, controller.getAllAddresses);
+.get(validation.headerValidation, verify.verifyToken, controller.getAllAddresses)
+.post(validation.headerValidation, validation.addressValidation, controller.createAddress);
 
 //router.router('/:locality')
 //.get(controller.getOne);
 
 router.route('/:email')
-.get(verify.verifyToken, controller.getOfUser);
+.get(validation.headerValidation, verify.verifyToken, controller.getOfUser);
 
 router.route('/search/query')
-.get(verify.verifyToken, controller.fulfillQuery);
+.get(validation.headerValidation, verify.verifyToken, controller.fulfillQuery);
 
 module.exports = router;
